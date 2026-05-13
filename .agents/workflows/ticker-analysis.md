@@ -31,9 +31,11 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 
 ## Phase 4: Technical Analysis & Momentum
 **Goal:** Evaluate short-term price momentum and identify optimal entry/exit signals.
-1. **Action:** Review the MACD, RSI, and MA crossover metrics generated in Phase 1.
-2. **CRITICAL Technical Rule:** Do NOT blindly apply textbook 30/70 RSI rules. You must assess the *historical* RSI floor for high-momentum stocks. If a stock never drops below 40 RSI, then 40 is the dynamic "oversold" threshold.
-3. **Deliverable:** Write a concise technical setup summary to `out/[ticker]_Technical_Setup.md` detailing the explicit Bullish/Bearish momentum signals and realistic support/resistance levels.
+1. **Action:** Review the **8EMA / 21EMA crossover**, **50MA trend**, MACD, and RSI metrics generated in Phase 1.
+2. **8EMA / 21EMA Crossover:** If 8EMA > 21EMA, short-term momentum is BULLISH. If 8EMA < 21EMA, momentum is BEARISH. EMAs are more responsive than simple MAs — treat crossovers as high-conviction signals.
+3. **50MA as Dynamic Support/Resistance:** If the price is above the 50MA, the medium-term trend is intact. Use the 50MA price level as a concrete support target for pullback entry strategies in the Position Building section.
+4. **CRITICAL Technical Rule:** Do NOT blindly apply textbook 30/70 RSI rules. You must assess the *historical* RSI floor for high-momentum stocks. If a stock never drops below 40 RSI, then 40 is the dynamic "oversold" threshold.
+5. **Deliverable:** Write a concise technical setup summary to `out/[ticker]_Technical_Setup.md` detailing the explicit Bullish/Bearish momentum signals, the 50MA level, and realistic support/resistance levels.
 
 ## Phase 5: Catalyst & Earnings Context
 **Goal:** Assess management tone and near-term catalysts.
@@ -48,4 +50,4 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 2. **CRITICAL Synthesis Rule:** Do not automatically issue a "SELL" rating just because a high Beta/WACC crushes the DCF value. If the DCF is low but the Comps and Momentum are incredibly strong, acknowledge that the market is pricing the stock on multiples, and provide a nuanced recommendation (e.g., HOLD).
 3. **Skill Alignment:** Apply `.agents/skills/equity-research/initiating-coverage/SKILL.md` (Tasks 4 & 5).
 4. **Deliverable:** You **MUST** author an institutional-quality 5-8 page markdown report. Save this report using the filesystem tool as `out/[ticker]_Initiation_Report.md`.
-5. Ensure the report includes a definitive Price Target, BUY/HOLD/SELL recommendation, and an **Actionable Position Building Strategy** that provides realistic entry points (based on the dynamic RSI thresholds from Phase 4, not textbook 30 RSI).
+5. Ensure the report includes a definitive Price Target, BUY/HOLD/SELL recommendation, and an **Actionable Position Building Strategy** that provides realistic entry points. Use the **50MA price level** as a concrete pullback target, the **8EMA/21EMA crossover** for timing, and dynamic RSI thresholds (from Phase 4) for confirmation.

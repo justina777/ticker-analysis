@@ -53,8 +53,9 @@ def compute_metrics(ticker):
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
     
-    df['5MA'] = ta.sma(df['Close'], length=5)
-    df['10MA'] = ta.sma(df['Close'], length=10)
+    df['8EMA'] = ta.ema(df['Close'], length=8)
+    df['21EMA'] = ta.ema(df['Close'], length=21)
+    df['50MA'] = ta.sma(df['Close'], length=50)
     df['RSI'] = ta.rsi(df['Close'], length=14)
     
     macd = ta.macd(df['Close'], fast=12, slow=26, signal=9)
@@ -81,18 +82,21 @@ def compute_metrics(ticker):
     
     print("\n--- TECHNICAL MOMENTUM INDICATORS ---")
     print(f"Latest Close Price : ${float(latest['Close']):.2f}")
-    print(f"5-Day MA           : ${float(latest['5MA']):.2f}")
-    print(f"10-Day MA          : ${float(latest['10MA']):.2f}")
+    print(f"8-Day EMA          : ${float(latest['8EMA']):.2f}")
+    print(f"21-Day EMA         : ${float(latest['21EMA']):.2f}")
+    print(f"50-Day MA          : ${float(latest['50MA']):.2f}")
     print(f"14-Day RSI         : {float(latest['RSI']):.2f}")
     print(f"MACD Line          : {float(latest['MACD']):.4f}")
     print(f"MACD Signal Line   : {float(latest['MACD_Signal']):.4f}")
     
-    ma_status = "BULLISH (5MA > 10MA)" if latest['5MA'] > latest['10MA'] else "BEARISH (5MA < 10MA)"
+    ma_status = "BULLISH (8EMA > 21EMA)" if latest['8EMA'] > latest['21EMA'] else "BEARISH (8EMA < 21EMA)"
+    trend_50ma = "ABOVE 50MA (Uptrend)" if latest['Close'] > latest['50MA'] else "BELOW 50MA (Downtrend)"
     rsi_status = "OVERBOUGHT" if latest['RSI'] > 70 else ("OVERSOLD" if latest['RSI'] < 30 else "NEUTRAL")
     macd_status = "BULLISH (MACD > Signal)" if latest['MACD'] > latest['MACD_Signal'] else "BEARISH (MACD < Signal)"
     
     print("\n--- MOMENTUM SUMMARY ---")
-    print(f"MA Trend  : {ma_status}")
+    print(f"EMA Trend : {ma_status}")
+    print(f"50MA Trend: {trend_50ma}")
     print(f"RSI State : {rsi_status}")
     print(f"MACD Trend: {macd_status}")
     print("=============================================")
