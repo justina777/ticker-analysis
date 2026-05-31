@@ -22,8 +22,13 @@ This skill calculates core mathematical metrics, blending fundamental valuation 
 To perform the quantitative analysis on a ticker, execute the bundled python script:
 
 ```bash
-uv run python .agents/skills/financial-analysis/technical-indicators/scripts/compute_indicators.py [TICKER]
+uv run python .agents/skills/financial-analysis/technical-indicators/scripts/compute_indicators.py [TICKER] --period [PERIOD]
 ```
+
+### The `--period` Argument
+The script accepts an optional `--period` argument that strictly aligns with `yfinance` history periods (e.g., `6mo`, `1y`, `2y`, `5y`).
+*   **Default (`--period 6mo`):** Perfect for short-to-medium term swing trading. Outputs the fast-reacting 8EMA, 21EMA, 50MA, RSI, and MACD.
+*   **Long-Term (`--period 2y` or greater):** Perfect for secular holding. Automatically calculates the **200-Day Moving Average (200MA)** as the macro structural floor, and calculates the **52-Week High / 52-Week Low** for cycle context.
 
 This script will output a mathematical summary containing both the Fundamental Valuation Inputs (to be used in your DCF modeling) and the Technical Momentum signals.
 

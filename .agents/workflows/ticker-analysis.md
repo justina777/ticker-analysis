@@ -11,7 +11,7 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 ## Phase 1: Data Structuring & Pre-computation
 **Goal:** Gather comprehensive fundamental, quantitative, and technical data.
 1. **Skill Alignment:** Apply `.agents/skills/financial-analysis/technical-indicators/SKILL.md` (now upgraded to Quantitative Metrics).
-2. **Action:** Run the `compute_indicators.py` script for the ticker to dynamically fetch the live Beta, Risk-Free Rate, WACC, Historical Revenue CAGR, and Technical Momentum indicators.
+2. **Action:** Run the `uv run python .agents/skills/financial-analysis/technical-indicators/scripts/compute_indicators.py [TICKER] --period 6mo` script to dynamically fetch the live Beta, Risk-Free Rate, WACC, Historical Revenue CAGR, and Technical Momentum indicators.
 3. Use your `search_web` tool to extract the target company's latest consensus estimates and company profile. **CRITICAL:** Identify the company's Fiscal Year-End (e.g., December, June, etc.) to prevent calendar year hallucinations.
 4. **Deliverable:** Write the extracted data to a structured `out/[ticker]_datapack.md` to maintain context. You MUST include the newly generated WACC and Growth Rates in this datapack.
 

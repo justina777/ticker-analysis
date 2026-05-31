@@ -1,3 +1,4 @@
 .env
 out/*
+out_secular/*
 __pycache__
