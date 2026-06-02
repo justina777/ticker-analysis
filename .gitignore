@@ -3,4 +3,4 @@ out/*
 out_secular/*
 out_master/*
 __pycache__
-.txt
+*.txt
