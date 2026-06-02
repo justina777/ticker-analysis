@@ -1,61 +1,56 @@
-# Stock Analyzer
+# Stock Analyzer: Agentic Workflow Orchestration
 
-A research-first stock analysis toolkit built around three institutional-grade `.agents` workflows.
+A research-first stock analysis toolkit designed for AI agents, built around three institutional-grade `.agents` workflows.
 
-This repo combines workflow orchestration, analyst-style financial modeling, and structured output generation to support single-ticker initiation research, portfolio reviews, and secular trend analysis.
+This repository combines workflow orchestration, analyst-style financial modeling (DCF and Comps), and structured markdown generation to support single-ticker initiation research, portfolio reviews, and secular trend analysis.
 
-## Core workflows in `.agents/workflows`
+## Agentic Execution & Core Workflows
 
-### 1. `ticker-analysis`
+Agents can trigger these primary workflows via their corresponding slash commands. All heavy lifting is handled by centralized Python scripts located in `.agents/skills/`.
+
+### 1. `/ticker-analysis`
 Responsible for deep, multi-skill initiation research on a single ticker.
 
-What it does:
-- Gathers fundamentals, momentum, and risk metrics.
-- Runs DCF and comps valuation scripts.
-- Generates a technical setup and earnings/catalyst assessment.
-- Produces an institutional-quality `out/[TICKER]_Initiation_Report.md`.
+* **What it does:**
+  - Gathers fundamental, momentum, and risk metrics using `compute_indicators.py`.
+  - Runs DCF and relative valuation (Comps) via Python automation.
+  - Checks for "Relative Oversold" institutional dip setups using `find_dip.py`.
+  - Produces an institutional-quality `out/[TICKER]_Initiation_Report.md`.
+* **When to use:**
+  - You need a full research note for one specific stock.
+  - You want definitive actionable guidance for new buyers vs. current holders.
 
-When to use:
-- You need a full research note for one ticker.
-- You want definitive actionable guidance for buyers and current holders.
+### 2. `/short-term-portfolio-review`
+Designed to batch-review a portfolio of tickers and create a tactical short-term action report (1-3 month horizon).
 
-### 2. `short-term-portfolio-review`
-Designed to review a portfolio of tickers and create a tactical short-term action report.
+* **What it does:**
+  - Reads the portfolio list from `ticker-list-s.txt`.
+  - Extracts the exact CAD exchange pricing using `fetch_cad_price.py` to prevent currency hallucination.
+  - Uses `invoke_subagent` to run `/ticker-analysis` for each position in parallel.
+  - Synthesizes a portfolio-level strategy report in `out_master/[YYYY-MM-DD]/Short_Term_Portfolio_Review.md` based on absolute position sizing and technical confluence.
+* **When to use:**
+  - You need a tactical review of a live portfolio to determine precise Add on Dip, Hold, or Trim targets.
 
-What it does:
-- Reads the portfolio list from `ticker-list-s.txt`.
-- Validates CAD holdings and native CAD prices.
-- Runs `ticker-analysis` for each position in parallel.
-- Synthesizes a portfolio-level report in `out_master/[YYYY-MM-DD]/Short_Term_Portfolio_Review.md`.
-
-When to use:
-- You need a 1–3 month tactical review of a real portfolio.
-- You want buy/trim/exit guidance across multiple positions.
-
-### 3. `secular-analysis`
+### 3. `/secular-analysis`
 Built for long-term, macro-driven secular trend investing.
 
-What it does:
-- Analyzes sector tailwinds and the company’s value chain position.
-- Screens for moat strength, capital intensity, and structural risk.
-- Builds a falsifiable thesis with kill criteria and DCF support.
-- Produces `out_secular/[TICKER]_Secular_Datapack.md` and `out_secular/[TICKER]_Secular_Playbook.md`.
+* **What it does:**
+  - Analyzes sector tailwinds and the company’s value chain position.
+  - Screens for moat strength, capital intensity, and structural risk.
+  - Builds a falsifiable thesis with kill criteria and DCF support.
+  - Produces `out_secular/[TICKER]_Secular_Datapack.md` and `out_secular/[TICKER]_Secular_Playbook.md`.
+* **When to use:**
+  - You are evaluating a stock as a long-term core holding (1+ year timeframe).
 
-When to use:
-- You are evaluating a stock as a long-term core holding.
-- You need a precise, time-bound secular thesis and portfolio strategy.
+## Repository Structure & Stack
 
-## Repository structure
+- **`.agents/workflows/`** — Workflow definitions (YAML/Markdown) for each agent pipeline.
+- **`.agents/skills/`** — Reusable skill modules (Python scripts) powering the workflows.
+  - *Tech Stack:* `Python`, `uv`, `yfinance`, `pandas`, `pandas_ta`
+- **`out/`** — Single-ticker outputs and intermediate deliverables (Excel & Markdown).
+- **`out_master/`** — Master portfolio review strategy documents.
+- **`out_secular/`** — Long-term secular analysis deliverables.
 
-- `.agents/workflows/` — workflow definitions for each agent pipeline.
-- `.agents/skills/` — reusable skill modules powering the workflows.
-- `out/` — single-ticker outputs and reports.
-- `out_master/` — portfolio review deliverables.
-- `out_secular/` — long-term secular analysis deliverables.
-- `ticker-list-s.txt` — sample portfolio input for short-term review.
-
-
-## How to use
-
-1. Run the appropriate workflow with your agent tooling.
-2. Review generated reports in `out/`, `out_master/`, or `out_secular/`.
+## Inputs & Configuration
+- **`ticker-list-s.txt`**: The core input file for the `/short-term-portfolio-review` workflow. It must follow a structured CSV format so agents can parse it accurately:
+  `Ticker, Name, Avg(CAD), Shares` *(e.g., `IBM.TO, International Business Machines Corporation, 40.9, 26`)*
