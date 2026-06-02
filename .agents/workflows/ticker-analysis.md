@@ -34,8 +34,8 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 1. **Action:** Review the **8EMA / 21EMA crossover**, **50MA trend**, MACD, and RSI metrics generated in Phase 1.
 2. **8EMA / 21EMA Crossover:** If 8EMA > 21EMA, short-term momentum is BULLISH. If 8EMA < 21EMA, momentum is BEARISH. EMAs are more responsive than simple MAs — treat crossovers as high-conviction signals.
 3. **50MA as Dynamic Support/Resistance:** If the price is above the 50MA, the medium-term trend is intact. Use the 50MA price level as a concrete support target for pullback entry strategies in the Position Building section.
-4. **CRITICAL Technical Rule:** Do NOT blindly apply textbook 30/70 RSI rules. You must assess the *historical* RSI floor for high-momentum stocks. If a stock never drops below 40 RSI, then 40 is the dynamic "oversold" threshold.
-5. **Deliverable:** Write a concise technical setup summary to `out/[ticker]_Technical_Setup.md` detailing the explicit Bullish/Bearish momentum signals, the 50MA level, and realistic support/resistance levels.
+4. **Institutional Dip Finder:** Apply `.agents/skills/financial-analysis/institutional-dip-finder/SKILL.md`. Run the centralized script `uv run python .agents/skills/financial-analysis/institutional-dip-finder/scripts/find_dip.py [TICKER]` to algorithmically check for a "Proximity Zone" dip-buying setup.
+5. **Deliverable:** Write a concise technical setup summary to `out/[ticker]_Technical_Setup.md` detailing the explicit Bullish/Bearish momentum signals, the 50MA level, realistic support/resistance levels, and whether the Institutional Dip Buy Signal was triggered.
 
 ## Phase 5: Catalyst & Earnings Context
 **Goal:** Assess management tone and near-term catalysts.
@@ -51,5 +51,5 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 3. **Skill Alignment:** Apply `.agents/skills/equity-research/initiating-coverage/SKILL.md` (Tasks 4 & 5).
 4. **Deliverable:** You **MUST** author an institutional-quality 5-8 page markdown report. Save this report using the filesystem tool as `out/[ticker]_Initiation_Report.md`.
 5. Ensure the report includes a definitive Price Target, BUY/HOLD/SELL recommendation, and a dual-pronged **Actionable Strategy Section** that addresses two specific use cases:
-    - **1) Non-Holders (Position Building):** Provide realistic entry points using the **50MA price level** as a concrete pullback target, the **8EMA/21EMA crossover** for timing, and dynamic RSI thresholds for confirmation.
-    - **2) Current Holders (Trimming/Exit OR Adding/Averaging Up):** If the position is overextended or RSI is extreme, define explicit technical triggers for trimming. However, if the broader trend is violently bullish, you MUST also provide explicit "Add on Dip" price targets (e.g., the 50MA or 21EMA) for holders who want to increase their allocation.
+    - **1) Non-Holders (Position Building):** Provide realistic entry points. If the `find_dip.py` script triggered a Buy Signal, aggressively recommend entering the stock now. If not, define the exact 50MA price level as the pullback target and wait for the 8EMA/21EMA crossover.
+    - **2) Current Holders (Trimming/Exit OR Adding/Averaging Up):** If the position is overextended, define technical triggers for trimming. If the broader trend is bullish AND the `find_dip.py` script triggered a Buy Signal, strongly recommend an "Add on Dip" / Averaging Up strategy to increase allocation based on the Proximity Zone metrics.
