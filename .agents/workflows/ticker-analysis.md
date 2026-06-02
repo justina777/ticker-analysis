@@ -16,18 +16,18 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 4. **Deliverable:** Write the extracted data to a structured `out/[ticker]_datapack.md` to maintain context. You MUST include the newly generated WACC and Growth Rates in this datapack.
 
 ## Phase 2: Core Financial Modeling
-**Goal:** Build intrinsic valuation models.
+**Goal:** Build intrinsic valuation models without writing custom python scratch code.
 1. Read the data pack generated in Phase 1.
 2. **Skill Alignment:** Read and apply `.agents/skills/financial-analysis/dcf-model/SKILL.md`.
-3. Build a 3-statement projection and a Discounted Cash Flow (DCF) model. **CRITICAL:** You must dynamically use the calculated WACC and Growth Rates outputted by the script in Phase 1. Do NOT use hardcoded assumptions.
-4. **Deliverable:** You **MUST** export the mathematical model to an Excel file using the rules in `.agents/skills/earnings-reviewer/xlsx-author/SKILL.md` (e.g., `out/[ticker]_DCF_Model.xlsx`).
+3. **Action:** Execute the centralized script `uv run python .agents/skills/financial-analysis/dcf-model/scripts/generate_dcf.py [TICKER]` to generate the baseline DCF model. **CRITICAL:** Pass the calculated Growth Rate and Margin from Phase 1 into the script using the `--growth` and `--margin` arguments.
+4. **Deliverable:** The script will automatically output `out/[ticker]_DCF_Model.xlsx`. Read the script output (Implied Share Price) for synthesis.
 
 ## Phase 3: Peer Benchmarking & Landscape
-**Goal:** Evaluate relative valuation against competitors.
+**Goal:** Evaluate relative valuation against competitors without writing custom python scratch code.
 1. Identify 3-4 direct competitors for the target ticker.
 2. **Skill Alignment:** Apply `.agents/skills/financial-analysis/comps-analysis/SKILL.md`.
-3. Extract multiples (EV/EBITDA, EV/Revenue, P/E) for the peer group and calculate the Peer Median/Mean.
-4. **Deliverable:** You **MUST** append this Comps analysis to the Excel file or output a separate `out/[ticker]_Comps.xlsx`.
+3. **Action:** Execute the centralized script `uv run python .agents/skills/financial-analysis/comps-analysis/scripts/generate_comps.py [TICKER] --peers [PEER1,PEER2...]` to generate the baseline Comps model.
+4. **Deliverable:** The script will automatically output `out/[ticker]_Comps.xlsx`. Read the script output (Peer Avg EV/EBITDA, Implied Share Price) for synthesis.
 
 ## Phase 4: Technical Analysis & Momentum
 **Goal:** Evaluate short-term price momentum and identify optimal entry/exit signals.
@@ -52,4 +52,4 @@ This workflow serves as a **guide** for you (the AI). You must manually execute 
 4. **Deliverable:** You **MUST** author an institutional-quality 5-8 page markdown report. Save this report using the filesystem tool as `out/[ticker]_Initiation_Report.md`.
 5. Ensure the report includes a definitive Price Target, BUY/HOLD/SELL recommendation, and a dual-pronged **Actionable Strategy Section** that addresses two specific use cases:
     - **1) Non-Holders (Position Building):** Provide realistic entry points using the **50MA price level** as a concrete pullback target, the **8EMA/21EMA crossover** for timing, and dynamic RSI thresholds for confirmation.
-    - **2) Current Holders (Trimming/Exit):** Define explicit technical triggers for taking profits or cutting losses (e.g., a bearish 8EMA/21EMA cross, a decisive break below the 50MA, or RSI dropping below support).
+    - **2) Current Holders (Trimming/Exit OR Adding/Averaging Up):** If the position is overextended or RSI is extreme, define explicit technical triggers for trimming. However, if the broader trend is violently bullish, you MUST also provide explicit "Add on Dip" price targets (e.g., the 50MA or 21EMA) for holders who want to increase their allocation.
